@@ -1,0 +1,6 @@
+Philosopher
+
+- Si moins de deux 2 philos, impossible de manger. creve apres time to die.
+- Faire les protections de input.
+
+- Faire manger tout les philos pairs ou impair en premier ?
