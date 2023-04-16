@@ -6,7 +6,7 @@
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 09:35:39 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/04/15 20:43:13 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/04/16 18:21:01 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,8 @@
 # include <stdio.h>
 # include <unistd.h>
 
-// typedef struct s_philo
-// {
-//     int philo_id;
-//     pthread_t philo;
-//     pthread_mutex_t *philo_mutex;
-//     int left_fork;
-//     int right_fork;
-// }   t_philo;
+# define ON_TABLE 0
+# define IN_USE 1
 
 typedef struct s_philo
 {
@@ -36,10 +30,15 @@ typedef struct s_philo
     int ms_die;
     int philo_nbr;
     int philo_id;
+    int fork;
+    int flag;
+    int eat_counter;
     pthread_t philo;
-    pthread_mutex_t *philo_mutex;
-    int left_fork;
-    int right_fork;
+    long start_sec;
+    long start_usec;
+    pthread_mutex_t *fork_mutex;
+    struct s_philo *left_philo;
+    struct s_philo *right_philo;
     // t_philo *philo;
 }   t_philo;
 
