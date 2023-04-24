@@ -1,18 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Philo.h                                            :+:      :+:    :+:   */
+/*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 09:35:39 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/04/16 18:21:01 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/04/24 15:26:52 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
 
+# include "../libft/libft.h"
 # include <sys/time.h>
 # include <pthread.h>
 # include <stdlib.h>
@@ -24,22 +25,26 @@
 
 typedef struct s_philo
 {
-    int must_eat;
-    int ms_sleep;
-    int ms_eat;
-    int ms_die;
-    int philo_nbr;
-    int philo_id;
-    int fork;
-    int flag;
-    int eat_counter;
-    pthread_t philo;
-    long start_sec;
-    long start_usec;
-    pthread_mutex_t *fork_mutex;
-    struct s_philo *left_philo;
-    struct s_philo *right_philo;
-    // t_philo *philo;
-}   t_philo;
+	int				flag;
+	int				philo_id;
+	int				philo_nbr;
+	int				eat_counter;
+	uint64_t		last_meal;
+	uint64_t		start_ms;
+	int				fork;
+	int				*right_fork;
+	pthread_t		philo;
+	pthread_mutex_t	*fork_mutex;
+}	t_philo;
+
+typedef struct s_data
+{
+	int			philo_nbr;
+	int			must_eat;
+	uint64_t	time;
+	uint64_t	ms_sleep;
+	uint64_t	ms_eat;
+	uint64_t	ms_die;
+}	t_data;
 
 #endif

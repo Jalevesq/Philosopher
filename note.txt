@@ -3,6 +3,7 @@ Philosopher
 - Si moins de deux 2 philos, impossible de manger. creve apres time to die.
 - Faire les protections de input.
 - Commencer la simulation seulement quand tout les philos sont creer ? comment ?
+- Mettre tout les fichier/dossier dans un dossier philo ? (Instruction PDF)
 
 - Faire manger tout les philos pairs ou impair en premier ? Commencer par le dernier ?
 
