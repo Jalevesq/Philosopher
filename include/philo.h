@@ -6,7 +6,7 @@
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 09:35:39 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/04/24 16:16:53 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/04/24 17:52:25 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ typedef struct s_philo
 	uint64_t		ms_eat;
 	uint64_t		last_meal;
 	uint64_t		start_ms;
+	struct timeval	current;
 	int				fork;
 	int				*right_fork;
 	pthread_t		philo;

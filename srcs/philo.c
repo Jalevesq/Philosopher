@@ -6,7 +6,7 @@
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 09:37:35 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/04/24 16:46:45 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/04/24 19:10:15 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,25 +16,23 @@ void	*ft_philosopher(void *arg)
 {
 	t_philo			*philo;
 	// u_int64_t		philo_start;
-	struct timeval time;
 	
-	// Create start time at the same time for every philo.
 	// Each philo will only count his last meal? (and own sleep with a ft_sleep?)
 	philo = (t_philo *)arg;
 	while (philo->flag != 1)
 		;
-	gettimeofday(&time, NULL);
+	// gettimeofday(&time, NULL);
 	// printf("%llu\n", (((time.tv_sec * (uint64_t)1000) + (time.tv_usec / 1000))) - philo->start_ms);
 	// printf("philo %d Simulation start\n", philo->philo_id);
 	
 	while (philo->flag != 2)
 	{
-		gettimeofday(&time, NULL);
-		philo->last_meal += (((time.tv_sec * (uint64_t)1000) + (time.tv_usec / 1000))) - philo->start_ms;
+		// gettimeofday(&philo->current, NULL);
+		// pthread_mutex_lock(philo->fork_mutex);
+		// philo->last_meal = (((philo->current.tv_sec * (uint64_t)1000) + (philo->current.tv_usec / 1000)) - philo->start_ms);
 		// printf("%llu\n", philo->last_meal);
+    	// pthread_mutex_unlock(philo->fork_mutex);
 	}
-	// pthread_mutex_lock(philo->fork_mutex);
-    // pthread_mutex_unlock(philo->fork_mutex);
 	return (NULL);
 }
 
@@ -51,6 +49,9 @@ void	ft_create_philo(t_philo *philo, int philo_nbr)
 		pthread_create(&philo[i].philo, NULL, ft_philosopher, &philo[i]);
 		i++;
 	}
+	i = 0;
+	while (i < philo_nbr)
+		philo[i++].flag = 1;
 }
 
 void	ft_join_n_free(t_philo *philo)
@@ -79,23 +80,20 @@ void	ft_check_health(t_philo *philo, t_data *data)
 {
 	int	i;
 	int	j;
-	// struct timeval start;
-	// struct timeval time;
+	struct timeval start;
+	struct timeval time;
 
-	// u_int64_t begin;
-	// u_int64_t curr;
+	u_int64_t begin;
+	u_int64_t curr;
 
-	// gettimeofday(&start, NULL);
-	// begin = (start.tv_sec * (uint64_t)1000) + (start.tv_usec / 1000);
-	int k = 0;
-	while (k < data->philo_nbr)
-		philo[k++].flag = 1;
+	gettimeofday(&start, NULL);
+	begin = (start.tv_sec * (uint64_t)1000) + (start.tv_usec / 1000);
 	while (1)
 	{
 		i = 0;
-		// gettimeofday(&time, NULL);
-		// curr = (time.tv_sec * (uint64_t)1000) + (time.tv_usec / 1000);
-		// printf("%llu\n", curr - begin);
+		gettimeofday(&time, NULL);
+		curr = (time.tv_sec * (uint64_t)1000) + (time.tv_usec / 1000);
+		printf("%llu\n", curr - begin);
 		while (i < data->philo_nbr)
 		{
 			
@@ -107,7 +105,8 @@ void	ft_check_health(t_philo *philo, t_data *data)
 					philo[i].flag = 2;
 					j++;
 				}
-				printf("");
+				// usleep(10);
+				printf("%llu ms - Philo %d died.\n", (((philo->current.tv_sec * (uint64_t)1000) + (philo->current.tv_usec / 1000))) - philo->start_ms, philo->philo_id);
 				return ;
 			}
 			i++;
