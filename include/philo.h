@@ -6,7 +6,7 @@
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 09:35:39 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/04/24 15:26:52 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/04/24 16:16:53 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 
 # define ON_TABLE 0
 # define IN_USE 1
+# define IN_USE_OWN 2
 
 typedef struct s_philo
 {
@@ -29,6 +30,7 @@ typedef struct s_philo
 	int				philo_id;
 	int				philo_nbr;
 	int				eat_counter;
+	uint64_t		ms_eat;
 	uint64_t		last_meal;
 	uint64_t		start_ms;
 	int				fork;

@@ -6,7 +6,7 @@
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 09:37:35 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/04/24 15:49:02 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/04/24 16:46:45 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,17 @@ void	*ft_philosopher(void *arg)
 	while (philo->flag != 1)
 		;
 	gettimeofday(&time, NULL);
-	printf("%llu\n", (((time.tv_sec * (uint64_t)1000)) + (time.tv_usec / 1000)) - philo->start_ms);
+	// printf("%llu\n", (((time.tv_sec * (uint64_t)1000) + (time.tv_usec / 1000))) - philo->start_ms);
 	// printf("philo %d Simulation start\n", philo->philo_id);
 	
-	// while (philo->flag != 2)
-	// {
-	// }
+	while (philo->flag != 2)
+	{
+		gettimeofday(&time, NULL);
+		philo->last_meal += (((time.tv_sec * (uint64_t)1000) + (time.tv_usec / 1000))) - philo->start_ms;
+		// printf("%llu\n", philo->last_meal);
+	}
+	// pthread_mutex_lock(philo->fork_mutex);
+    // pthread_mutex_unlock(philo->fork_mutex);
 	return (NULL);
 }
 
@@ -46,14 +51,34 @@ void	ft_create_philo(t_philo *philo, int philo_nbr)
 		pthread_create(&philo[i].philo, NULL, ft_philosopher, &philo[i]);
 		i++;
 	}
+}
+
+void	ft_join_n_free(t_philo *philo)
+{
+    int i;
+    int *status;
+
+    i = 0;
+    status = NULL;
+    while (i < philo->philo_nbr)
+    {
+        pthread_join(philo[i].philo, (void *)status);
+        pthread_mutex_destroy(philo[i].fork_mutex);
+        i++;
+    }
 	i = 0;
-	while (i < philo_nbr)
-		philo[i++].flag = 1;
+	while (i < philo->philo_nbr)
+	{
+		free(philo[i].philo);
+    	free(philo[i++].fork_mutex);
+		i++;
+	}
 }
 
 void	ft_check_health(t_philo *philo, t_data *data)
 {
 	int	i;
+	int	j;
 	// struct timeval start;
 	// struct timeval time;
 
@@ -62,6 +87,9 @@ void	ft_check_health(t_philo *philo, t_data *data)
 
 	// gettimeofday(&start, NULL);
 	// begin = (start.tv_sec * (uint64_t)1000) + (start.tv_usec / 1000);
+	int k = 0;
+	while (k < data->philo_nbr)
+		philo[k++].flag = 1;
 	while (1)
 	{
 		i = 0;
@@ -73,8 +101,14 @@ void	ft_check_health(t_philo *philo, t_data *data)
 			
 			if (philo[i].last_meal >= data->ms_die)
 			{
-				// while (j < philo_nbr) set philo flag to 2.
-				// ft_join_n_exit() func to join all thread and free, stop thread and leave.
+				j = 0;
+				while (j < philo->philo_nbr)
+				{
+					philo[i].flag = 2;
+					j++;
+				}
+				printf("");
+				return ;
 			}
 			i++;
 		}
@@ -113,6 +147,7 @@ void	ft_init_philo(t_philo *philo, t_data *data, char **av)
 	{
 		philo[i].philo_id = i + 1;
 		philo[i].last_meal = 0;
+		// philo[i].ms_eat = data->ms_die;
 		philo[i].eat_counter = 0;
 		philo[i].flag = -1;
 		philo[i].fork = ON_TABLE;
@@ -145,7 +180,54 @@ int main(int ac, char **av)
         ft_init_philo(philo, data, av);
 		ft_create_philo(philo, data->philo_nbr);
 		ft_check_health(philo, data);
-		
+		ft_join_n_free(philo);
+		free(philo);
+		free(data);
     }
     return (0);
 }
+
+		// if (philo->philo_id % 2 == 0)
+		// {
+		// 	pthread_mutex_lock(philo->fork_mutex);
+		// 	if (philo->fork == ON_TABLE)
+		// 	{
+		// 		philo->fork == IN_USE_OWN;
+		// 		printf("%llu ms - Philo %d prend sa fourchette.", (((time.tv_sec * (uint64_t)1000) + (time.tv_usec / 1000))) - philo->start_ms, philo->philo_id);
+		// 	}
+		// 	if (philo->right_fork == ON_TABLE)
+		// 	{
+		// 		philo->fork = IN_USE;
+		// 		printf("%llu ms - Philo %d prend la fourchette droite.", (((time.tv_sec * (uint64_t)1000) + (time.tv_usec / 1000))) - philo->start_ms, philo->philo_id);
+		// 	}
+		// 	if (philo->fork == IN_USE_OWN && philo->right_fork == IN_USE)
+		// 	{
+		// 		printf("%llu ms - Philo %d mange...", (((time.tv_sec * (uint64_t)1000) + (time.tv_usec / 1000))) - philo->start_ms, philo->philo_id);
+		// 		usleep(philo.);
+		// 		philo->fork = ON_TABLE;
+		// 		philo->right_fork = ON_TABLE;
+		// 	}
+		// 	pthread_mutex_unlock(philo->fork_mutex);
+		// }
+		// else if (philo->philo_id % 3 == 0)
+		// {
+		// 	pthread_mutex_lock(philo->fork_mutex);
+		// 	if (philo->fork == ON_TABLE)
+		// 	{
+		// 		philo->fork == IN_USE_OWN;
+		// 		printf("%llu ms - Philo %d prend sa fourchette.", (((time.tv_sec * (uint64_t)1000) + (time.tv_usec / 1000))) - philo->start_ms, philo->philo_id);
+		// 	}
+		// 	if (philo->right_fork == ON_TABLE)
+		// 	{
+		// 		philo->fork = IN_USE;
+		// 		printf("%llu ms - Philo %d prend la fourchette droite.", (((time.tv_sec * (uint64_t)1000) + (time.tv_usec / 1000))) - philo->start_ms, philo->philo_id);
+		// 	}
+		// 	if (philo->fork == IN_USE_OWN && philo->right_fork == IN_USE)
+		// 	{
+		// 		printf("%llu ms - Philo %d mange...", (((time.tv_sec * (uint64_t)1000) + (time.tv_usec / 1000))) - philo->start_ms, philo->philo_id);
+		// 		usleep(200 * 1000);
+		// 		philo->fork = ON_TABLE;
+		// 		philo->right_fork = ON_TABLE;
+		// 	}
+		// 	pthread_mutex_unlock(philo->fork_mutex);
+		// }
