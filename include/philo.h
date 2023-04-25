@@ -6,7 +6,7 @@
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 09:35:39 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/04/24 17:52:25 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/04/25 13:28:30 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,14 @@
 # define IN_USE 1
 # define IN_USE_OWN 2
 
+# define EATING 1
+# define THINKING 2
+# define SLEEPING 3
+
 typedef struct s_philo
 {
 	int				flag;
+	int				state;
 	int				philo_id;
 	int				philo_nbr;
 	int				eat_counter;
@@ -37,6 +42,7 @@ typedef struct s_philo
 	int				fork;
 	int				*right_fork;
 	pthread_t		philo;
+	pthread_mutex_t *right_fork_mutex;
 	pthread_mutex_t	*fork_mutex;
 }	t_philo;
 
@@ -49,5 +55,10 @@ typedef struct s_data
 	uint64_t	ms_eat;
 	uint64_t	ms_die;
 }	t_data;
+
+
+void	*ft_philosopher(void *arg);
+void	ft_init_philo(t_philo *philo, t_data *data, char **av);
+void	ft_create_philo(t_philo *philo, int philo_nbr);
 
 #endif
