@@ -6,7 +6,7 @@
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 09:35:39 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/04/25 13:28:30 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/04/26 14:04:20 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,15 @@
 # define EATING 1
 # define THINKING 2
 # define SLEEPING 3
+# define DEAD 4
 
 typedef struct s_philo
 {
-	int				flag;
 	int				state;
 	int				philo_id;
 	int				philo_nbr;
 	int				eat_counter;
+	uint64_t		ms_die;
 	uint64_t		ms_eat;
 	uint64_t		last_meal;
 	uint64_t		start_ms;

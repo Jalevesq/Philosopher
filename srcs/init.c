@@ -6,7 +6,7 @@
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 13:26:41 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/04/25 16:55:36 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/04/26 14:04:25 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	ft_init_philo(t_philo *philo, t_data *data, char **av)
 	i = 0;
 	data->philo_nbr = ft_atoi(av[1]);
 	data->ms_die = ft_atoi(av[2]);
-	// data->ms_eat = ft_atoi(av[3]);
+	data->ms_eat = ft_atoi(av[3]);
 	// data->ms_sleep = ft_atoi(av[4]);
 	// if (av[5])
 	// data->must_eat = ft_atoi(av[5]);
@@ -51,9 +51,9 @@ void	ft_init_philo(t_philo *philo, t_data *data, char **av)
 		philo[i].philo_id = i + 1;
 		philo[i].last_meal = 0;
 		philo[i].state = THINKING;
-		// philo[i].ms_eat = data->ms_die;
+		philo[i].ms_die = data->ms_die;
+		philo[i].ms_eat = data->ms_eat;
 		philo[i].eat_counter = 0;
-		philo[i].flag = -1;
 		philo[i].fork = ON_TABLE;
 		// put malloc protection
 		philo[i].philo = malloc(sizeof(pthread_t));

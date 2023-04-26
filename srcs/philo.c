@@ -6,7 +6,7 @@
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 09:37:35 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/04/25 13:36:22 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/04/26 14:06:09 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,19 +42,16 @@ void	ft_check_health(t_philo *philo, t_data *data)
 	while (1)
 	{
 		i = 0;
-
 		while (i < data->philo_nbr)
 		{
-			
-			if (philo[i].last_meal >= data->ms_die)
+			if (philo[i].state == DEAD)
 			{
 				j = 0;
 				while (j < philo->philo_nbr)
 				{
-					philo[i].flag = 2;
+					philo[i].state = DEAD;
 					j++;
 				}
-				printf("%llu ms - Philo %d died.\n", (((philo->current.tv_sec * (uint64_t)1000) + (philo->current.tv_usec / 1000))) - philo->start_ms, philo->philo_id);
 				return ;
 			}
 			i++;
