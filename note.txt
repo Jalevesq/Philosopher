@@ -1,5 +1,6 @@
 Philosopher
 
+- Libft interdite (PDF)
 - minimum 1 philo et plus de 0 ms pour tout les param.(parsing)
 - Commencer la simulation seulement quand tout les philos sont creer ? comment ?
 - Mettre tout les fichier/dossier dans un dossier philo ? (Instruction PDF)

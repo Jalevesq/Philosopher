@@ -6,7 +6,7 @@
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 09:35:39 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/04/26 14:04:20 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/04/27 16:28:14 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@
 # define THINKING 2
 # define SLEEPING 3
 # define DEAD 4
+# define FIRST_DEAD 5
+# define WAITTING 6
 
 typedef struct s_philo
 {
@@ -42,13 +44,14 @@ typedef struct s_philo
 	struct timeval	current;
 	int				fork;
 	int				*right_fork;
-	pthread_t		philo;
+	pthread_mutex_t *etat_mutex;
 	pthread_mutex_t *right_fork_mutex;
 	pthread_mutex_t	*fork_mutex;
 }	t_philo;
 
 typedef struct s_data
 {
+	pthread_t		*philo;
 	int			philo_nbr;
 	int			must_eat;
 	uint64_t	time;
@@ -60,6 +63,6 @@ typedef struct s_data
 
 void	*ft_philosopher(void *arg);
 void	ft_init_philo(t_philo *philo, t_data *data, char **av);
-void	ft_create_philo(t_philo *philo, int philo_nbr);
+void	ft_create_philo(t_philo *philo, t_data *data, int philo_nbr);
 
 #endif

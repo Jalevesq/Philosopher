@@ -6,13 +6,13 @@
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 09:37:35 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/04/26 14:06:09 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/04/27 16:55:42 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-void	ft_join_n_free(t_philo *philo)
+void	ft_join_n_free(t_philo *philo, t_data *data)
 {
     int i;
     int *status;
@@ -21,37 +21,39 @@ void	ft_join_n_free(t_philo *philo)
     status = NULL;
     while (i < philo->philo_nbr)
     {
-        pthread_join(philo[i].philo, (void *)status);
-        pthread_mutex_destroy(philo[i].fork_mutex);
+        pthread_join(data->philo[i], (void *)status);
         i++;
     }
 	i = 0;
 	while (i < philo->philo_nbr)
 	{
-		free(philo[i].philo);
-    	free(philo[i++].fork_mutex);
+		pthread_mutex_destroy(philo[i].fork_mutex);
+		pthread_mutex_destroy(philo[i].etat_mutex);
+		i++;
+	}
+	i = 0;
+	while (i < philo->philo_nbr)
+	{
+    	free(philo[i].fork_mutex);
+		free(philo[i].etat_mutex);
 		i++;
 	}
 }
 
-void	ft_check_health(t_philo *philo, t_data *data)
+void	ft_check_state(t_philo *philo, t_data *data)
 {
 	int	i;
-	int	j;
 
 	while (1)
 	{
 		i = 0;
 		while (i < data->philo_nbr)
 		{
-			if (philo[i].state == DEAD)
+			if (philo[i].state == FIRST_DEAD)
 			{
-				j = 0;
-				while (j < philo->philo_nbr)
-				{
-					philo[i].state = DEAD;
-					j++;
-				}
+				i = 0;
+				while (i < data->philo_nbr)
+					philo[i++].state = DEAD;
 				return ;
 			}
 			i++;
@@ -78,9 +80,10 @@ int main(int ac, char **av)
 		if (!philo)
 			return (1);
         ft_init_philo(philo, data, av);
-		ft_create_philo(philo, data->philo_nbr);
-		ft_check_health(philo, data);
-		ft_join_n_free(philo);
+		ft_create_philo(philo, data, data->philo_nbr);
+		ft_check_state(philo, data);
+		ft_join_n_free(philo, data);
+		free(data->philo);
 		free(philo);
 		free(data);
     }
