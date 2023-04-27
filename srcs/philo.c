@@ -6,7 +6,7 @@
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 09:37:35 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/04/27 16:55:42 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/04/27 18:39:45 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,20 @@ void	ft_check_state(t_philo *philo, t_data *data)
 		i = 0;
 		while (i < data->philo_nbr)
 		{
+			pthread_mutex_lock(philo[i].etat_mutex);
 			if (philo[i].state == FIRST_DEAD)
 			{
+				pthread_mutex_unlock(philo[i].etat_mutex);
 				i = 0;
 				while (i < data->philo_nbr)
-					philo[i++].state = DEAD;
+				{
+					pthread_mutex_lock(philo[i].etat_mutex);
+					philo[i].state = DEAD;
+					pthread_mutex_unlock(philo[i++].etat_mutex);
+				}
 				return ;
 			}
+			pthread_mutex_unlock(philo[i++].etat_mutex);
 			i++;
 		}
 	}
