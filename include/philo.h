@@ -6,7 +6,7 @@
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 09:35:39 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/04/27 18:34:39 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/04/28 09:32:52 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ typedef struct s_philo
 	int				eat_counter;
 	uint64_t		ms_die;
 	uint64_t		ms_eat;
+	uint64_t		ms_sleep;
 	uint64_t		last_meal;
 	uint64_t		start_ms;
 	struct timeval	current;
