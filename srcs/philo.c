@@ -6,7 +6,7 @@
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 09:37:35 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/04/30 14:09:47 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/04/30 14:12:52 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	ft_join_n_free(t_philo *philo, t_data *data)
 
     while (i < philo->philo_nbr)
     {
-        pthread_join(data->philo[i], (void *)status);
+        pthread_join(data->philo[i], NULL);
         i++;
     }
 	ft_usleep(data->ms_sleep + data->ms_eat);
