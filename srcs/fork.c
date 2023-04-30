@@ -1,22 +1,14 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstdelone.c                                     :+:      :+:    :+:   */
+/*   fork.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/04 03:18:20 by jalevesq          #+#    #+#             */
-/*   Updated: 2022/11/04 04:12:23 by jalevesq         ###   ########.fr       */
+/*   Created: 2023/04/30 12:13:05 by jalevesq          #+#    #+#             */
+/*   Updated: 2023/04/30 14:09:14 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../include/philo.h"
 
-void	ft_lstdelone(t_list *lst, void (*del)(void*))
-{
-	if (lst && del)
-	{
-		del(lst->content);
-		free(lst);
-	}
-}

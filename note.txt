@@ -4,4 +4,9 @@ Philosopher
 - minimum 1 philo et plus de 0 ms pour tout les param.(parsing)
 - Mettre tout les fichier/dossier dans un dossier philo ? (Instruction PDF)
 
+- remplacer u_int64 par time_t
 -  Probleme avec les ms (se decale au fur et a mesure)
+
+((start.tv_sec * (uint64_t)1000)) + (start.tv_usec / 1000);
+
+fonction get_time et usleep ?
