@@ -6,7 +6,7 @@
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/30 12:17:40 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/05/01 15:23:52 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/05/01 16:56:17 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,10 @@ int	ft_death_watcher(t_philo *philo)
 
 int	ft_printf(t_philo *philo, char *str)
 {
-	// pthread_mutex_lock((&philo->printf_mutex));
 	pthread_mutex_lock((philo->printf_mutex));
 	if (ft_death_watcher(philo) != 1)
 	{
-		printf("%llu ms - Philo %d %s", get_time() - philo->start_ms, philo->philo_id, str);
+		printf("%llu ms - Philo %d %s", (get_time() - philo->start_ms), philo->philo_id, str);
 		pthread_mutex_unlock(philo->printf_mutex);
 	}
 	else

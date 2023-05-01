@@ -6,7 +6,7 @@
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 09:37:35 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/05/01 16:38:37 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/05/01 16:49:58 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,15 +50,15 @@ void	ft_check_state(t_philo *philo, t_data *data)
 				return ;
 			}
 			pthread_mutex_unlock(&philo->death_mutex);
-			if (philo[i].must_eat >= 0)
-			{
-				if (ft_check_eat() == 1)
-				{
-					pthread_mutex_lock(&philo->death_mutex);
-					*philo->is_dead = DEAD;
-					pthread_mutex_unlock(&philo->death_mutex);
-				}
-			}
+			// if (philo[i].must_eat >= 0)
+			// {
+			// 	// if (ft_check_eat() == 1)
+			// 	// {
+			// 	// 	pthread_mutex_lock(&philo->death_mutex);
+			// 	// 	*philo->is_dead = DEAD;
+			// 	// 	pthread_mutex_unlock(&philo->death_mutex);
+			// 	// }
+			// }
 			i++;
 		}
 	}

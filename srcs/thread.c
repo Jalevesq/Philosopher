@@ -6,7 +6,7 @@
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 13:27:26 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/05/01 15:18:04 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/05/01 16:57:31 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ void	*ft_philosopher(void *arg)
 	pthread_mutex_lock(&philo->start_mutex);
 	pthread_mutex_unlock(&philo->start_mutex);
 	if (philo->philo_id % 2 == 0)
-		ft_usleep(philo->ms_eat);
+		ft_usleep(philo->ms_eat - 1);
 	while (1)
 	{
 		if (ft_take_fork(philo) == 1)
