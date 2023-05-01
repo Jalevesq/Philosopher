@@ -6,17 +6,42 @@
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/30 12:17:40 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/04/30 14:10:48 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/05/01 10:59:14 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
+int	ft_death_watcher(t_philo *philo)
+{
+	if (ft_isdead(philo) == 1)
+	{
+		return (1);
+	}
+	else if (ft_isfirstdead(philo) == 1)
+	{
+		// pthread_mutex_lock(philo->printf_mutex);
+		printf("%llu ms - Philo %d has died", get_time() - philo->start_ms, philo->philo_id);
+		return (1);
+	}
+	return (0);
+}
+
 int	ft_printf(t_philo *philo, char *str)
 {
-	pthread_mutex_lock((&philo->printf_mutex));
-	printf("%llu ms - Philo %d %s", get_time() - philo->start_ms, philo->philo_id, str);
-	pthread_mutex_unlock(&philo->printf_mutex);
+	// pthread_mutex_lock((&philo->printf_mutex));
+	pthread_mutex_lock((philo->printf_mutex));
+	if (ft_death_watcher(philo) == 1)
+	{
+		pthread_mutex_unlock(philo->printf_mutex);
+		return (1);
+	}
+	else
+	{
+		// pthread_mutex_lock((philo->printf_mutex));
+		printf("%llu ms - Philo %d %s", get_time() - philo->start_ms, philo->philo_id, str);
+		pthread_mutex_unlock(philo->printf_mutex);
+	}
 	return (0);
 }
 
@@ -34,6 +59,10 @@ void	ft_usleep(int sleep)
 	uint64_t now;
 
 	now = get_time();
-	while (get_time() - now <= (uint64_t)sleep)
-		;
+	while (1)
+	{
+		if (get_time() - now >= (uint64_t)sleep)
+			break;
+		usleep(50);
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 13:26:41 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/04/30 14:09:23 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/05/01 10:32:57 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,12 @@ void	ft_init_right_fork(t_philo *philo, int philo_nbr)
 		if (i == 0)
 		{
 			philo[i].right_fork = &philo[philo_nbr - 1].fork;
-			philo[i].right_fork_mutex = philo[philo_nbr - 1].fork_mutex;
+			philo[i].right_fork_mutex = &philo[philo_nbr - 1].fork_mutex;
 		}
 		else
 		{
 			philo[i].right_fork = &philo[i - 1].fork;
-			philo[i].right_fork_mutex = philo[i - 1].fork_mutex;
+			philo[i].right_fork_mutex = &philo[i - 1].fork_mutex;
 		}
 		i++;
 	}
@@ -36,6 +36,8 @@ void	ft_init_right_fork(t_philo *philo, int philo_nbr)
 void	ft_init_philo(t_philo *philo, t_data *data, char **av)
 {
 	int	i;
+	pthread_mutex_t printf_mutex;
+	pthread_mutex_init(&printf_mutex, NULL);
 
 	i = 0;
 	data->philo_nbr = ft_atoi(av[1]);
@@ -58,10 +60,10 @@ void	ft_init_philo(t_philo *philo, t_data *data, char **av)
 		philo[i].ms_sleep = data->ms_sleep;
 		philo[i].must_eat = data->must_eat;
 		philo[i].fork = ON_TABLE;
+		philo[i].printf_mutex = &printf_mutex;
 		// put malloc protection
 		pthread_mutex_init(&philo[i].fork_mutex, NULL);
 		pthread_mutex_init(&philo[i].start_mutex, NULL);
-		pthread_mutex_init(&philo[i].printf_mutex, NULL);
 		pthread_mutex_init(&philo[i].death_mutex, NULL);
 		i++;
 	}

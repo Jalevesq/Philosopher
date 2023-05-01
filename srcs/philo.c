@@ -6,7 +6,7 @@
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 09:37:35 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/04/30 19:29:58 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/05/01 10:40:29 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	ft_join_n_free(t_philo *philo, t_data *data)
     int i;
 
 	i = 0;
+	pthread_mutex_destroy(philo[i].printf_mutex);
     while (i < philo->philo_nbr)
     {
         pthread_join(data->philo[i], NULL);
@@ -26,13 +27,37 @@ void	ft_join_n_free(t_philo *philo, t_data *data)
 	i = 0;
 	while (i < philo->philo_nbr)
 	{
-		pthread_mutex_destroy(&philo[i].printf_mutex);
 		pthread_mutex_destroy(&philo[i].fork_mutex);
 		pthread_mutex_destroy(&philo[i].start_mutex);
 		pthread_mutex_destroy(&philo[i].death_mutex);
 		i++;
 	}
 	i = 0;
+}
+
+void	ft_check_state(t_philo *philo, t_data *data)
+{
+	int	i;
+	int	j;
+
+	while (1)
+	{
+		i = 0;
+		while (i < data->philo_nbr)
+		{
+			pthread_mutex_lock(&philo[i].death_mutex);
+			if (philo[i].is_dead == DEAD)
+			{
+				j = 0;
+				while (j < philo->philo_nbr)
+					philo[j++].is_dead = DEAD;
+				pthread_mutex_unlock(&philo[i].death_mutex);
+				return ;
+			}
+			pthread_mutex_unlock(&philo->death_mutex);
+			i++;
+		}
+	}
 }
 
 
@@ -56,6 +81,7 @@ int main(int ac, char **av)
 			return (1);
         ft_init_philo(philo, data, av);
 		ft_create_philo(philo, data, data->philo_nbr);
+		ft_check_state(philo, data);
 		ft_join_n_free(philo, data);
 		free(data->philo);
 		free(philo);
