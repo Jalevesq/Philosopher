@@ -6,7 +6,7 @@
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 09:35:39 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/05/01 12:23:05 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/05/01 14:32:42 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ typedef struct s_philo
 	int				state;
 	int				philo_id;
 	int				philo_nbr;
+	int				eat_counter;
 	int				must_eat;
 	uint64_t		ms_die;
 	uint64_t		ms_eat;

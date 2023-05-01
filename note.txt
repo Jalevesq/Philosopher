@@ -5,8 +5,8 @@ Philosopher
 - Mettre tout les fichier/dossier dans un dossier philo ? (Instruction PDF)
 
 - remplacer u_int64 par time_t
--  Probleme avec les ms (se decale au fur et a mesure)
+-  Probleme avec les ms (se decale au fur et a mesure) quand bcp de philo
+- pouvoir les faires crever pendant qu'ils dorment et pendant qu'ils mangent
+- les faires crever avec number_to_eat.
 
 ((start.tv_sec * (uint64_t)1000)) + (start.tv_usec / 1000);
-
-fonction get_time et usleep ?

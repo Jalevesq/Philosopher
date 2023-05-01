@@ -6,7 +6,7 @@
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 09:37:35 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/05/01 14:07:37 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/05/01 16:38:37 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,19 @@ void	ft_check_state(t_philo *philo, t_data *data)
 			pthread_mutex_lock(&philo->death_mutex);
 			if (*philo->is_dead == DEAD)
 			{
-				pthread_mutex_unlock(&philo->death_mutex);
+				pthread_mutex_unlock(&philo->death_mutex); 
 				return ;
 			}
 			pthread_mutex_unlock(&philo->death_mutex);
+			if (philo[i].must_eat >= 0)
+			{
+				if (ft_check_eat() == 1)
+				{
+					pthread_mutex_lock(&philo->death_mutex);
+					*philo->is_dead = DEAD;
+					pthread_mutex_unlock(&philo->death_mutex);
+				}
+			}
 			i++;
 		}
 	}
@@ -78,7 +87,7 @@ int	ft_check_arg(int ac, char **av)
 		return (1);
 	if (av[5])
 	{
-		if(ft_atoi(av[5]) <= 0)
+		if(ft_atoi(av[5]) <= 0 || ft_atoi(av[5]) >= 2147483647)
 			return (1);
 	}
 	return (0);

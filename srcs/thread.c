@@ -6,7 +6,7 @@
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 13:27:26 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/05/01 12:05:54 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/05/01 15:18:04 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,8 @@ int	ft_take_fork(t_philo *philo)
 
 int	ft_eat(t_philo *philo)
 {
-	if (philo->fork == IN_USE_OWN && *philo->right_fork == IN_USE)
-	{
+	// if (philo->fork == IN_USE_OWN && *philo->right_fork == IN_USE)
+	// {
 		if (ft_printf(philo, "is eating\n") == 1)
 		{
 			philo->fork = ON_TABLE;
@@ -70,30 +70,33 @@ int	ft_eat(t_philo *philo)
 		philo->state = EATING;
 		philo->last_meal = get_time();
 		ft_usleep(philo->ms_eat);
+		pthread_mutex_lock(&philo->death_mutex);
+		philo->eat_counter += 1;
+		pthread_mutex_unlock(&philo->death_mutex);
 		philo->fork = ON_TABLE;
 		*philo->right_fork = ON_TABLE;
 		pthread_mutex_unlock(&philo->fork_mutex);
 		pthread_mutex_unlock(philo->right_fork_mutex);
 		if (ft_death_watcher(philo) == 1)
 			return (1);
-	}
+	// }
 	return (0);
 }
 
 int	ft_sleep(t_philo *philo)
 {
-	if (philo->state == EATING)
-	{
-		if (ft_printf(philo, "is sleeping\n") == 1)
-			return (1);
-		philo->state = SLEEPING;
-		ft_usleep(philo->ms_sleep);
-		philo->state = THINKING;
-		if (ft_printf(philo, "is thinking\n") == 1)
-			return (1);
-	}
-	else
+	// if (philo->state == EATING)
+	// {
+	if (ft_printf(philo, "is sleeping\n") == 1)
 		return (1);
+	philo->state = SLEEPING;
+	ft_usleep(philo->ms_sleep);
+	philo->state = THINKING;
+	if (ft_printf(philo, "is thinking\n") == 1)
+		return (1);
+	// }
+	// else
+	// 	return (1);
 	return (0);
 }
 
