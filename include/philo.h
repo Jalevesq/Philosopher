@@ -6,7 +6,7 @@
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 09:35:39 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/05/01 12:01:42 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/05/01 12:23:05 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ typedef struct s_data
 	uint64_t	ms_die;
 }	t_data;
 
+
+int			ft_isdigit(int c);
 int			ft_isdead(t_philo *philo);
 int			ft_isfirstdead(t_philo *philo);
 int			ft_death_watcher(t_philo *philo);

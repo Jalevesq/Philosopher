@@ -6,7 +6,7 @@
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 13:26:41 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/05/01 12:01:58 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/05/01 12:48:04 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,6 @@ void	ft_init_philo(t_philo *philo, t_data *data, char **av)
 	data->ms_eat = ft_atoi(av[3]);
 	data->ms_sleep = ft_atoi(av[4]);
 	data->philo = malloc(sizeof(pthread_t) * data->philo_nbr);
-	if (av[5])
-		data->must_eat = ft_atoi(av[5]);
-	else
-		data->must_eat = -1;
 	while (i < data->philo_nbr)
 	{
 		philo[i].philo_id = i + 1;

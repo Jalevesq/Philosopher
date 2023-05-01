@@ -6,21 +6,21 @@
 #    By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/15 09:37:39 by jalevesq          #+#    #+#              #
-#    Updated: 2023/05/01 11:30:14 by jalevesq         ###   ########.fr        #
+#    Updated: 2023/05/01 12:51:13 by jalevesq         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -fsanitize=address
 RM = rm -rf
 
 INC_DIR = includes
 SRCS_DIR = srcs
 OBJS_DIR = objs
 
-SRCS = philo.c init.c thread.c fork.c ft_atoi.c isdead.c utils.c
+SRCS = philo.c init.c thread.c fork.c ft_atoi.c isdead.c utils.c ft_isdigit.c
 
 OBJS = $(addprefix ${OBJS_DIR}/, ${SRCS:%.c=%.o})
 
