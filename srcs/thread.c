@@ -6,7 +6,7 @@
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 13:27:26 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/05/01 10:39:07 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/05/01 12:05:54 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,10 +88,12 @@ int	ft_sleep(t_philo *philo)
 			return (1);
 		philo->state = SLEEPING;
 		ft_usleep(philo->ms_sleep);
-		if (ft_death_watcher(philo) == 1)
-			return (1);
 		philo->state = THINKING;
+		if (ft_printf(philo, "is thinking\n") == 1)
+			return (1);
 	}
+	else
+		return (1);
 	return (0);
 }
 
@@ -113,7 +115,7 @@ void	*ft_philosopher(void *arg)
 			break;
 		if (ft_sleep(philo) == 1)
 			break;
-		// ft_usleep(1);
+		// ft_usleep(5);
 	}
 	return (NULL);
 }

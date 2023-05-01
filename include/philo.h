@@ -6,7 +6,7 @@
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 09:35:39 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/05/01 10:32:40 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/05/01 12:01:42 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 # define NOT_DEAD 2
 typedef struct s_philo
 {
-	int				is_dead;
+	int				*is_dead;
 	int				state;
 	int				philo_id;
 	int				philo_nbr;
@@ -54,6 +54,7 @@ typedef struct s_philo
 typedef struct s_data
 {
 	pthread_t		*philo;
+	int			is_dead;
 	int			philo_nbr;
 	int			must_eat;
 	uint64_t	time;

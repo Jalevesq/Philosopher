@@ -6,7 +6,7 @@
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 13:26:41 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/05/01 10:32:57 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/05/01 12:01:58 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void	ft_init_philo(t_philo *philo, t_data *data, char **av)
 	pthread_mutex_init(&printf_mutex, NULL);
 
 	i = 0;
+	data->is_dead = NOT_DEAD;
 	data->philo_nbr = ft_atoi(av[1]);
 	data->ms_die = ft_atoi(av[2]);
 	data->ms_eat = ft_atoi(av[3]);
@@ -53,7 +54,7 @@ void	ft_init_philo(t_philo *philo, t_data *data, char **av)
 	{
 		philo[i].philo_id = i + 1;
 		philo[i].last_meal = 0;
-		philo[i].is_dead = NOT_DEAD;
+		philo[i].is_dead = &data->is_dead;
 		philo[i].state = THINKING;
 		philo[i].ms_die = data->ms_die;
 		philo[i].ms_eat = data->ms_eat;
