@@ -6,7 +6,7 @@
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 09:37:35 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/05/02 14:11:51 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/05/02 14:21:40 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,15 +41,15 @@ int	ft_philo_all_eat(t_philo *philo)
 	i = 0;
 	while (i < philo->philo_nbr)
 	{
-		pthread_mutex_lock(&philo->start_mutex);
+		pthread_mutex_lock(&philo[i].start_mutex);
 		if (philo[i].eat_counter >= philo[i].must_eat)
 		{
-			pthread_mutex_unlock(&philo->start_mutex);
+			pthread_mutex_unlock(&philo[i].start_mutex);
 			i++;
 		}
 		else
 		{
-			pthread_mutex_unlock(&philo->start_mutex);
+			pthread_mutex_unlock(&philo[i].start_mutex);
 			return (0);
 		}
 	}

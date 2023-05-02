@@ -6,7 +6,7 @@
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 13:27:26 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/05/02 14:01:11 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/05/02 14:15:34 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	ft_eat(t_philo *philo)
 {
 	// if (philo->fork == IN_USE_OWN && *philo->right_fork == IN_USE)
 	// {
-		philo->eat_counter += 1;
+		philo->state = EATING;
 		if (ft_printf(philo, "is eating\n") == 1)
 		{
 			philo->fork = ON_TABLE;
@@ -68,7 +68,6 @@ int	ft_eat(t_philo *philo)
 			pthread_mutex_unlock(philo->right_fork_mutex);
 			return (1);
 		}
-		philo->state = EATING;
 		philo->last_meal = get_time();
 		ft_usleep(philo->ms_eat);
 		philo->fork = ON_TABLE;
@@ -85,13 +84,13 @@ int	ft_sleep(t_philo *philo)
 {
 	// if (philo->state == EATING)
 	// {
+	philo->state = SLEEPING;
 	if (ft_printf(philo, "is sleeping\n") == 1)
 		return (1);
-	philo->state = SLEEPING;
 	ft_usleep(philo->ms_sleep);
+	philo->state = THINKING;
 	if (ft_printf(philo, "is thinking\n") == 1)
 		return (1);
-	philo->state = THINKING;
 	// }
 	// else
 	// 	return (1);
