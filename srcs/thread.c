@@ -6,7 +6,7 @@
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 13:27:26 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/05/02 14:15:34 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/05/02 15:24:18 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,12 @@ int	ft_eat(t_philo *philo)
 			pthread_mutex_unlock(philo->right_fork_mutex);
 			return (1);
 		}
+		if (philo->state == EATING)
+		{
+			pthread_mutex_lock(&philo->start_mutex);
+			philo->eat_counter += 1;
+			pthread_mutex_unlock(&philo->start_mutex);
+		}
 		philo->last_meal = get_time();
 		ft_usleep(philo->ms_eat);
 		philo->fork = ON_TABLE;
@@ -102,11 +108,10 @@ void	*ft_philosopher(void *arg)
 	t_philo			*philo;
 	
 	philo = (t_philo *)arg;
-	// Use to start every philosopher at the same time.
 	pthread_mutex_lock(&philo->start_mutex);
 	pthread_mutex_unlock(&philo->start_mutex);
 	if (philo->philo_id % 2 == 0)
-		ft_usleep(philo->ms_eat - 1);
+		ft_usleep(philo->ms_eat);
 	while (1)
 	{
 		if (ft_take_fork(philo) == 1)
@@ -115,10 +120,20 @@ void	*ft_philosopher(void *arg)
 			break;
 		if (ft_sleep(philo) == 1)
 			break;
-		// ft_usleep(5);
 	}
 	return (NULL);
 }
 	// gettimeofday(&curr, NULL);
 	// now = ((curr.tv_sec * (uint64_t)1000)) + (curr.tv_usec / 1000);
 	// printf("%llu\n", now - philo->start_ms);
+
+	// Use to start every philosopher at the same time.
+	// if (philo->philo_nbr == 1)
+	// {x
+	// 	pthread_mutex_lock(&philo->death_mutex);
+	// 	*philo->is_dead = DEAD;
+	// 	pthread_mutex_unlock(&philo->death_mutex);
+	// 	ft_usleep(philo->ms_die);
+	// 	printf("%llu ms - Philo %d has died\n", get_time() - philo->start_ms, philo->philo_id);
+	// 	return (NULL);
+	// }

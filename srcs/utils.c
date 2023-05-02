@@ -6,7 +6,7 @@
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/30 12:17:40 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/05/02 14:22:18 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/05/02 15:20:42 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,6 @@ int	ft_printf(t_philo *philo, char *str)
 	pthread_mutex_lock((philo->printf_mutex));
 	if (ft_death_watcher(philo) != 1)
 	{
-		if (philo->state == EATING)
-		{
-			pthread_mutex_lock(&philo->start_mutex);
-			philo->eat_counter += 1;
-			pthread_mutex_unlock(&philo->start_mutex);
-		}
 		if (ft_philo_have_eat(philo) == 1)
 		{
 			pthread_mutex_unlock(philo->printf_mutex);
@@ -81,9 +75,10 @@ void	ft_usleep(int sleep)
 	uint64_t now;
 
 	now = get_time();
+	usleep((sleep - 10) * 1000);
 	while (1)
 	{
-		if (get_time() - now >= (uint64_t)sleep)
+		if (get_time() - now >= ((uint64_t)sleep))
 			break;
 		usleep(50);
 	}
