@@ -6,7 +6,7 @@
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 09:35:39 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/05/01 20:10:47 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/05/02 13:55:43 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,17 @@
 
 # define DEAD 1
 # define NOT_DEAD 2
+
+# define FINISH 1
+# define NOT_FINISH 2
 typedef struct s_philo
 {
 	int				*is_dead;
+	int				*finish_flag;
 	int				state;
 	int				philo_id;
 	int				philo_nbr;
 	int				eat_counter;
-	int				finish_flag;
 	int				must_eat;
 	uint64_t		ms_die;
 	uint64_t		ms_eat;
@@ -57,8 +60,10 @@ typedef struct s_data
 {
 	pthread_t		*philo;
 	int			is_dead;
+	int			finish_flag;
 	int			philo_nbr;
 	int			must_eat;
+	pthread_mutex_t printf_mutex;
 	uint64_t	time;
 	uint64_t	ms_sleep;
 	uint64_t	ms_eat;

@@ -2,6 +2,7 @@ Philosopher
 
 - Libft interdite (PDF)
 - minimum 1 philo et plus de 0 ms pour tout les param.(parsing)
+- Parsing int min int max
 - Mettre tout les fichier/dossier dans un dossier philo ? (Instruction PDF)
 - remplacer u_int64 par time_t
 -  Probleme avec les ms (se decale au fur et a mesure) quand bcp de philo

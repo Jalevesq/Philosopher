@@ -6,7 +6,7 @@
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 09:37:35 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/05/01 19:42:07 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/05/02 14:11:51 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ void	ft_join_n_free(t_philo *philo, t_data *data)
         pthread_join(data->philo[i], NULL);
         i++;
     }
-	ft_usleep(data->ms_sleep + data->ms_eat);
-	pthread_mutex_destroy(philo[i].printf_mutex);
+	ft_usleep((data->ms_sleep + data->ms_eat) / 2);
+	pthread_mutex_destroy(&data->printf_mutex);
 	i = 0;
 	while (i < philo->philo_nbr)
 	{
@@ -32,6 +32,29 @@ void	ft_join_n_free(t_philo *philo, t_data *data)
 		pthread_mutex_destroy(&philo[i].death_mutex);
 		i++;
 	}
+}
+
+int	ft_philo_all_eat(t_philo *philo)
+{
+	int i;
+
+	i = 0;
+	while (i < philo->philo_nbr)
+	{
+		pthread_mutex_lock(&philo->start_mutex);
+		if (philo[i].eat_counter >= philo[i].must_eat)
+		{
+			pthread_mutex_unlock(&philo->start_mutex);
+			i++;
+		}
+		else
+		{
+			pthread_mutex_unlock(&philo->start_mutex);
+			return (0);
+		}
+	}
+
+	return (1);
 }
 
 void	ft_check_state(t_philo *philo, t_data *data)
@@ -43,13 +66,20 @@ void	ft_check_state(t_philo *philo, t_data *data)
 		i = 0;
 		while (i < data->philo_nbr)
 		{
-			pthread_mutex_lock(&philo->death_mutex);
+			pthread_mutex_lock(&philo[i].death_mutex);
 			if (*philo->is_dead == DEAD)
 			{
-				pthread_mutex_unlock(&philo->death_mutex); 
+				pthread_mutex_unlock(&philo[i].death_mutex); 
 				return ;
 			}
-			pthread_mutex_unlock(&philo->death_mutex);
+			pthread_mutex_unlock(&philo[i].death_mutex);
+			if (ft_philo_all_eat(philo) == 1 && data->must_eat > 0)
+			{
+				pthread_mutex_lock(philo->printf_mutex);
+				*philo->finish_flag = FINISH;
+				pthread_mutex_unlock(philo->printf_mutex);
+				return ;
+			}
 			i++;
 		}
 	}

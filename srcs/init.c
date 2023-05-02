@@ -6,7 +6,7 @@
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 13:26:41 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/05/01 20:12:33 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/05/02 13:55:30 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,22 +36,22 @@ void	ft_init_right_fork(t_philo *philo, int philo_nbr)
 void	ft_init_philo(t_philo *philo, t_data *data, char **av)
 {
 	int	i;
-	pthread_mutex_t printf_mutex;
-	pthread_mutex_init(&printf_mutex, NULL);
 
 	i = 0;
 	data->is_dead = NOT_DEAD;
+	data->finish_flag = NOT_FINISH;
 	data->philo_nbr = ft_atoi(av[1]);
 	data->ms_die = ft_atoi(av[2]);
 	data->ms_eat = ft_atoi(av[3]);
 	data->ms_sleep = ft_atoi(av[4]);
 	data->philo = malloc(sizeof(pthread_t) * data->philo_nbr);
+	pthread_mutex_init(&data->printf_mutex, NULL);
 	while (i < data->philo_nbr)
 	{
 		philo[i].eat_counter = 0;
 		philo[i].philo_id = i + 1;
 		philo[i].last_meal = 0;
-		philo[i].finish_flag = 0;
+		philo[i].finish_flag = &data->finish_flag;
 		philo[i].is_dead = &data->is_dead;
 		philo[i].state = THINKING;
 		philo[i].philo_nbr = data->philo_nbr;
@@ -60,7 +60,7 @@ void	ft_init_philo(t_philo *philo, t_data *data, char **av)
 		philo[i].ms_sleep = data->ms_sleep;
 		philo[i].must_eat = data->must_eat;
 		philo[i].fork = ON_TABLE;
-		philo[i].printf_mutex = &printf_mutex;
+		philo[i].printf_mutex = &data->printf_mutex;
 		// put malloc protection
 		pthread_mutex_init(&philo[i].fork_mutex, NULL);
 		pthread_mutex_init(&philo[i].start_mutex, NULL);
