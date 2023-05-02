@@ -6,7 +6,7 @@
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 13:26:41 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/05/01 14:33:51 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/05/01 20:12:33 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,10 @@ void	ft_init_philo(t_philo *philo, t_data *data, char **av)
 		philo[i].eat_counter = 0;
 		philo[i].philo_id = i + 1;
 		philo[i].last_meal = 0;
+		philo[i].finish_flag = 0;
 		philo[i].is_dead = &data->is_dead;
 		philo[i].state = THINKING;
+		philo[i].philo_nbr = data->philo_nbr;
 		philo[i].ms_die = data->ms_die;
 		philo[i].ms_eat = data->ms_eat;
 		philo[i].ms_sleep = data->ms_sleep;

@@ -6,7 +6,7 @@
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 13:27:26 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/05/01 16:57:31 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/05/01 20:19:01 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,12 +67,14 @@ int	ft_eat(t_philo *philo)
 			pthread_mutex_unlock(philo->right_fork_mutex);
 			return (1);
 		}
+		pthread_mutex_lock(&philo->start_mutex);
+		philo->eat_counter += 1;
+		if (philo->eat_counter == philo->must_eat)
+			philo->finish_flag = 1; // was here
+		pthread_mutex_unlock(&philo->start_mutex);
 		philo->state = EATING;
 		philo->last_meal = get_time();
 		ft_usleep(philo->ms_eat);
-		pthread_mutex_lock(&philo->death_mutex);
-		philo->eat_counter += 1;
-		pthread_mutex_unlock(&philo->death_mutex);
 		philo->fork = ON_TABLE;
 		*philo->right_fork = ON_TABLE;
 		pthread_mutex_unlock(&philo->fork_mutex);

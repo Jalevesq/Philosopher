@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   isDead.c                                           :+:      :+:    :+:   */
+/*   isdead.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/30 12:24:57 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/05/01 12:08:53 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/05/01 19:10:28 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,6 @@ int	ft_isdead(t_philo *philo)
 
 int	ft_isfirstdead(t_philo *philo)
 {
-	int	i;
-
-	i = 0;
 	if (get_time() - philo->last_meal >= philo->ms_die)
 	{
 		pthread_mutex_lock(&philo->death_mutex);
