@@ -1,13 +1,11 @@
 Philosopher
 
-- Libft interdite (PDF)
-- minimum 1 philo et plus de 0 ms pour tout les param.(parsing)
+- 60 ms pour tout les param.(parsing)
 - Parsing int min int max
 - Mettre tout les fichier/dossier dans un dossier philo ? (Instruction PDF)
 - remplacer u_int64 par time_t
 -  Probleme avec les ms (se decale au fur et a mesure) quand bcp de philo
 - pouvoir les faires crever pendant qu'ils dorment et pendant qu'ils mangent
-- les faires crever avec number_to_eat.
 - je regarde trop souvent quand ils crevent ?
 
-((start.tv_sec * (uint64_t)1000)) + (start.tv_usec / 1000);
+- Philo marche a 200 avec la commande ./philo 200 410 200 200 20 | grep eating | wc mais die quand affiche ecriture dans terminal
