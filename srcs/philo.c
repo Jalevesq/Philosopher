@@ -6,7 +6,7 @@
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 09:37:35 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/05/02 19:48:15 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/05/03 10:23:23 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,17 @@ void	ft_join_n_free(t_philo *philo, t_data *data)
         i++;
     }
 	usleep((data->ms_sleep + data->ms_eat) / 2);
-	pthread_mutex_destroy(&data->printf_mutex);
 	i = 0;
 	while (i < philo->philo_nbr)
 	{
 		pthread_mutex_destroy(&philo[i].fork_mutex);
-		pthread_mutex_destroy(&philo[i].start_mutex);
-		pthread_mutex_destroy(&philo[i].death_mutex);
+		pthread_mutex_destroy(&philo[i].eat_mutex);
 		i++;
 	}
+	pthread_mutex_destroy(&data->printf_mutex);
+	pthread_mutex_destroy(&data->death_mutex);
+	pthread_mutex_destroy(&data->start_even_mutex);
+	pthread_mutex_destroy(&data->start_odd_mutex);
 }
 
 int	ft_philo_all_eat(t_philo *philo)
@@ -41,15 +43,15 @@ int	ft_philo_all_eat(t_philo *philo)
 	i = 0;
 	while (i < philo->philo_nbr)
 	{
-		pthread_mutex_lock(&philo[i].start_mutex);
+		pthread_mutex_lock(&philo[i].eat_mutex);
 		if (philo[i].eat_counter >= philo[i].must_eat)
 		{
-			pthread_mutex_unlock(&philo[i].start_mutex);
+			pthread_mutex_unlock(&philo[i].eat_mutex);
 			i++;
 		}
 		else
 		{
-			pthread_mutex_unlock(&philo[i].start_mutex);
+			pthread_mutex_unlock(&philo[i].eat_mutex);
 			return (0);
 		}
 	}
@@ -66,18 +68,18 @@ void	ft_check_state(t_philo *philo, t_data *data)
 		i = 0;
 		while (i < data->philo_nbr)
 		{
-			pthread_mutex_lock(&philo[i].death_mutex);
+			pthread_mutex_lock(philo[i].death_mutex);
 			if (*philo[i].is_dead == DEAD)
 			{
-				pthread_mutex_unlock(&philo[i].death_mutex); 
+				pthread_mutex_unlock(philo[i].death_mutex); 
 				return ;
 			}
-			pthread_mutex_unlock(&philo[i].death_mutex);
+			pthread_mutex_unlock(philo[i].death_mutex);
 			if (ft_philo_all_eat(philo) == 1 && data->must_eat > 0)
 			{
-				pthread_mutex_lock(philo->printf_mutex);
+				pthread_mutex_lock(philo[i].death_mutex);
 				*philo->finish_flag = FINISH;
-				pthread_mutex_unlock(philo->printf_mutex);
+				pthread_mutex_unlock(philo[i].death_mutex);
 				return ;
 			}
 			i++;

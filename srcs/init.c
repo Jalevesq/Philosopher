@@ -6,7 +6,7 @@
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 13:26:41 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/05/02 15:21:06 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/05/03 10:36:27 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,9 @@ void	ft_init_philo(t_philo *philo, t_data *data, char **av)
 	data->ms_sleep = ft_atoi(av[4]);
 	data->philo = malloc(sizeof(pthread_t) * data->philo_nbr);
 	pthread_mutex_init(&data->printf_mutex, NULL);
+	pthread_mutex_init(&data->death_mutex, NULL);
+	pthread_mutex_init(&data->start_even_mutex, NULL);
+	pthread_mutex_init(&data->start_odd_mutex, NULL);
 	while (i < data->philo_nbr)
 	{
 		philo[i].eat_counter = 0;
@@ -61,10 +64,12 @@ void	ft_init_philo(t_philo *philo, t_data *data, char **av)
 		philo[i].must_eat = data->must_eat;
 		philo[i].fork = ON_TABLE;
 		philo[i].printf_mutex = &data->printf_mutex;
+		philo[i].death_mutex = &data->death_mutex;
+		philo[i].start_odd_mutex = &data->start_odd_mutex;
+		philo[i].start_even_mutex = &data->start_even_mutex;
 		// put malloc protection
 		pthread_mutex_init(&philo[i].fork_mutex, NULL);
-		pthread_mutex_init(&philo[i].start_mutex, NULL);
-		pthread_mutex_init(&philo[i].death_mutex, NULL);
+		pthread_mutex_init(&philo[i].eat_mutex, NULL);
 		i++;
 	}
 	ft_init_right_fork(philo, data->philo_nbr);
@@ -76,18 +81,21 @@ void	ft_create_philo(t_philo *philo, t_data *data, int philo_nbr)
 	uint64_t now;
 
 	i = 0;
-	while (i < philo_nbr)
-		pthread_mutex_lock(&philo[i++].start_mutex);
+	pthread_mutex_lock(&data->start_even_mutex);
+	pthread_mutex_lock(&data->start_odd_mutex);
 	i = 0;
 	now = get_time();
 	while (i < philo_nbr)
 	{
 		philo[i].start_ms = now;
 		philo[i].last_meal = now; 
-		pthread_create(&data->philo[i], NULL, ft_philosopher, &philo[i]);
+		if (philo[i].philo_id % 2 == 0)
+			pthread_create(&data->philo[i], NULL, ft_philosopher_even, &philo[i]);
+		else
+			pthread_create(&data->philo[i], NULL, ft_philosopher_odd, &philo[i]);
 		i++;
 	}
-	i = 0;
-	while (i < philo_nbr)
-		pthread_mutex_unlock(&philo[i++].start_mutex);
+	pthread_mutex_unlock(&data->start_even_mutex);
+	ft_usleep(philo, philo->ms_eat); // wont work if ms_eat or ms_sleep > ms_die. Add flag systen ? (if 1, dont look at philo)
+	pthread_mutex_unlock(&data->start_odd_mutex);
 }

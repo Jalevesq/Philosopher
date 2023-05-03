@@ -6,7 +6,7 @@
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/30 12:17:40 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/05/03 09:47:54 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/05/03 10:20:04 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,17 +24,18 @@ int	ft_death_watcher(t_philo *philo)
 	return (0);
 }
 
+// problem? using global death_mutex too often ? Use different mutex for finish ?
 int	ft_philo_have_eat(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->start_mutex);
+	pthread_mutex_lock(philo->death_mutex);
 	if (*philo->finish_flag == NOT_FINISH)
 	{
-		pthread_mutex_unlock(&philo->start_mutex);
+		pthread_mutex_unlock(philo->death_mutex);
 		return (0);
 	}
 	else
 	{
-		pthread_mutex_unlock(&philo->start_mutex);
+		pthread_mutex_unlock(philo->death_mutex);
 		return (1);
 	}
 }
@@ -94,9 +95,9 @@ void	ft_usleep(t_philo *philo, int sleep)
 				if (get_time() - philo->last_meal >= philo->ms_die)
 				{
 					ft_printf(philo, "has died\n");
-					pthread_mutex_lock(&philo->death_mutex);
+					pthread_mutex_lock(philo->death_mutex);
 					*philo->is_dead = DEAD;
-					pthread_mutex_unlock(&philo->death_mutex);
+					pthread_mutex_unlock(philo->death_mutex);
 					return ;
 				}
 				usleep(50);
@@ -110,9 +111,9 @@ void	ft_usleep(t_philo *philo, int sleep)
 				if (get_time() - philo->last_meal >= philo->ms_die)
 				{
 					ft_printf(philo, "has died\n");
-					pthread_mutex_lock(&philo->death_mutex);
+					pthread_mutex_lock(philo->death_mutex);
 					*philo->is_dead = DEAD;
-					pthread_mutex_unlock(&philo->death_mutex);
+					pthread_mutex_unlock(philo->death_mutex);
 					return ;
 				}
 				usleep(50);

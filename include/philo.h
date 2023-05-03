@@ -6,7 +6,7 @@
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 09:35:39 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/05/02 20:06:07 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/05/03 10:15:46 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,13 @@ typedef struct s_philo
 	uint64_t		ms_sleep;
 	uint64_t		last_meal;
 	uint64_t		start_ms;
-	struct timeval	current;
 	int				fork;
 	int				*right_fork;
+	pthread_mutex_t eat_mutex;
 	pthread_mutex_t *printf_mutex;
-	pthread_mutex_t death_mutex;
-	pthread_mutex_t start_mutex;
+	pthread_mutex_t *death_mutex;
+	pthread_mutex_t *start_odd_mutex;
+	pthread_mutex_t *start_even_mutex;
 	pthread_mutex_t *right_fork_mutex;
 	pthread_mutex_t	fork_mutex;
 }	t_philo;
@@ -63,14 +64,19 @@ typedef struct s_data
 	int			finish_flag;
 	int			philo_nbr;
 	int			must_eat;
-	pthread_mutex_t printf_mutex;
 	uint64_t	time;
 	uint64_t	ms_sleep;
 	uint64_t	ms_eat;
 	uint64_t	ms_die;
+	pthread_mutex_t death_mutex;
+	pthread_mutex_t start_odd_mutex;
+	pthread_mutex_t start_even_mutex;
+	pthread_mutex_t printf_mutex;
 }	t_data;
 
 
+int			ft_eat(t_philo *philo);
+int			ft_sleep(t_philo *philo);
 int			ft_isdigit(int c);
 int			ft_isdead(t_philo *philo);
 int			ft_isfirstdead(t_philo *philo);
@@ -80,7 +86,8 @@ uint64_t	get_time(void);
 void		ft_usleep(t_philo *philo, int sleep);
 int			ft_atoi(const char *str);
 int			ft_take_fork(t_philo *philo);
-void		*ft_philosopher(void *arg);
+void		*ft_philosopher_even(void *arg);
+void		*ft_philosopher_odd(void *arg);
 void		ft_init_philo(t_philo *philo, t_data *data, char **av);
 void		ft_create_philo(t_philo *philo, t_data *data, int philo_nbr);
 
