@@ -6,7 +6,7 @@
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/30 12:17:40 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/05/02 20:18:49 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/05/03 09:47:54 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ int	ft_printf(t_philo *philo, char *str)
 			pthread_mutex_unlock(philo->printf_mutex);
 			return (1);
 		}
-		// usleep(10);
 		printf("%llu ms - Philo %d %s", (get_time() - philo->start_ms), philo->philo_id, str);
 		pthread_mutex_unlock(philo->printf_mutex);
 	}
@@ -74,9 +73,10 @@ void	ft_usleep(t_philo *philo, int sleep)
 {
 	uint64_t now;
 	now = get_time();
+	// (void)philo;
+	usleep((sleep - 10) * 1000);
 	if (philo->ms_die / sleep > 0)
 	{
-		usleep((sleep - 5) * 1000);
 		while (1)
 		{
 			if (get_time() - now >= ((uint64_t)sleep))
@@ -88,7 +88,7 @@ void	ft_usleep(t_philo *philo, int sleep)
 	{
 		if (philo->state == EATING)
 		{
-			usleep((philo->ms_die - 10) * 1000);
+			// usleep((philo->ms_die - 10) * 1000);
 			while (1)
 			{
 				if (get_time() - philo->last_meal >= philo->ms_die)
@@ -106,7 +106,7 @@ void	ft_usleep(t_philo *philo, int sleep)
 		{
 			while (1)
 			{
-				usleep((philo->ms_die - 10) * 1000);
+				// usleep((philo->ms_die - 10) * 1000);
 				if (get_time() - philo->last_meal >= philo->ms_die)
 				{
 					ft_printf(philo, "has died\n");
