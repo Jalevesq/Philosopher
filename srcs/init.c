@@ -6,7 +6,7 @@
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 13:26:41 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/05/03 10:36:27 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/05/03 12:43:22 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,6 @@ void	ft_create_philo(t_philo *philo, t_data *data, int philo_nbr)
 		i++;
 	}
 	pthread_mutex_unlock(&data->start_even_mutex);
-	ft_usleep(philo, philo->ms_eat); // wont work if ms_eat or ms_sleep > ms_die. Add flag systen ? (if 1, dont look at philo)
+	ft_usleep(philo->ms_eat); // wont work if ms_eat or ms_sleep > ms_die. Add flag systen ? (if 1, dont look at philo)
 	pthread_mutex_unlock(&data->start_odd_mutex);
 }

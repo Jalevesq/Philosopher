@@ -6,7 +6,7 @@
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 13:27:26 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/05/03 10:24:13 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/05/03 15:33:53 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 static int	ft_take_own_fork_odd(t_philo *philo)
 {
-		philo->fork = IN_USE_OWN;
 		if (ft_printf(philo, "take left fork (own)\n") == 1)
 			return (1);
 	return (0);
@@ -22,7 +21,6 @@ static int	ft_take_own_fork_odd(t_philo *philo)
 
 static int	ft_take_right_fork_odd(t_philo *philo)
 {
-		*philo->right_fork = IN_USE;
 		if (ft_printf(philo, "take right fork\n") == 1)
 			return (1);
 	return (0);
@@ -33,15 +31,12 @@ static int	ft_take_fork_odd(t_philo *philo)
 	pthread_mutex_lock(&philo->fork_mutex);
 	if (ft_take_own_fork_odd(philo) == 1)
 	{
-		philo->fork = ON_TABLE;
 		pthread_mutex_unlock(&philo->fork_mutex);
 		return (1);
 	}
 	pthread_mutex_lock(philo->right_fork_mutex);
 	if (ft_take_right_fork_odd(philo) == 1)
 	{
-		philo->fork = ON_TABLE;
-		*philo->right_fork = ON_TABLE;
 		pthread_mutex_unlock(&philo->fork_mutex);
 		pthread_mutex_unlock(philo->right_fork_mutex);
 		return (1);

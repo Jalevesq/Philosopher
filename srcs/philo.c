@@ -6,7 +6,7 @@
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 09:37:35 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/05/03 10:23:23 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/05/03 15:22:39 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,28 +63,29 @@ void	ft_check_state(t_philo *philo, t_data *data)
 {
 	int	i;
 
-	while (1)
-	{
-		i = 0;
-		while (i < data->philo_nbr)
+		while (1)
 		{
-			pthread_mutex_lock(philo[i].death_mutex);
-			if (*philo[i].is_dead == DEAD)
-			{
-				pthread_mutex_unlock(philo[i].death_mutex); 
-				return ;
-			}
-			pthread_mutex_unlock(philo[i].death_mutex);
-			if (ft_philo_all_eat(philo) == 1 && data->must_eat > 0)
+			i = 0;
+			while (i < data->philo_nbr)
 			{
 				pthread_mutex_lock(philo[i].death_mutex);
-				*philo->finish_flag = FINISH;
+				if (*philo[i].is_dead == DEAD)
+				{
+					pthread_mutex_unlock(philo[i].death_mutex); 
+					return ;
+				}
 				pthread_mutex_unlock(philo[i].death_mutex);
-				return ;
+				if (ft_philo_all_eat(philo) == 1 && data->must_eat > 0)
+				{
+					pthread_mutex_lock(philo[i].death_mutex);
+					*philo->finish_flag = FINISH;
+					pthread_mutex_unlock(philo[i].death_mutex);
+					return ;
+				}
+				i++;
 			}
-			i++;
+			usleep(3000);
 		}
-	}
 }
 
 int	ft_check_arg(int ac, char **av)
