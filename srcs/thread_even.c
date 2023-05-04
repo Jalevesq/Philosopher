@@ -6,47 +6,23 @@
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 10:06:37 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/05/03 15:33:46 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/05/04 11:10:07 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
 
-int	ft_take_own_fork_even(t_philo *philo)
-{
-		if (ft_printf(philo, "take left fork (own)\n") == 1)
-			return (1);
-	return (0);
-}
-
-int	ft_take_right_fork_even(t_philo *philo)
-{
-		if (ft_printf(philo, "take right fork\n") == 1)
-			return (1);
-		// for when only 1 philo.
-		if (philo->philo_id == 1 && philo->philo_nbr == 1)
-		{
-			usleep(philo->ms_die);
-			ft_printf(philo, "has died\n");
-			pthread_mutex_lock(philo->death_mutex);
-			*philo->is_dead = DEAD;
-			pthread_mutex_unlock(philo->death_mutex);
-			return (1);
-		}
-	return (0);
-}
-
 int	ft_take_fork_even(t_philo *philo)
 {
 	pthread_mutex_lock(philo->right_fork_mutex);
-	if (ft_take_right_fork_even(philo) == 1)
+	if (ft_printf(philo, "take right fork\n") == 1)
 	{
 		pthread_mutex_unlock(philo->right_fork_mutex);
 		return (1);
 	}
 	pthread_mutex_lock(&philo->fork_mutex);
-	if (ft_take_own_fork_even(philo) == 1)
+	if (ft_printf(philo, "take left fork (own)\n") == 1)
 	{
 		pthread_mutex_unlock(&philo->fork_mutex);
 		pthread_mutex_unlock(philo->right_fork_mutex);
