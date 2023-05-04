@@ -6,12 +6,11 @@
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 10:06:37 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/05/04 11:10:07 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/05/04 12:59:57 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
-
 
 int	ft_take_fork_even(t_philo *philo)
 {
@@ -34,18 +33,18 @@ int	ft_take_fork_even(t_philo *philo)
 void	*ft_philosopher_even(void *arg)
 {
 	t_philo			*philo;
-	
+
 	philo = (t_philo *)arg;
 	pthread_mutex_lock(philo->start_even_mutex);
 	pthread_mutex_unlock(philo->start_even_mutex);
 	while (1)
 	{
 		if (ft_take_fork_even(philo) == 1)
-			break;
+			break ;
 		if (ft_eat(philo) == 1)
-			break;
+			break ;
 		if (ft_sleep(philo) == 1)
-			break;
+			break ;
 	}
 	return (NULL);
 }

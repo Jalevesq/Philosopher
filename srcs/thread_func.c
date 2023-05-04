@@ -6,12 +6,11 @@
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 10:13:48 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/05/03 20:32:23 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/05/04 13:25:08 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
-
 
 // check if no data race
 void	ft_sleep_die(t_philo *philo)
@@ -30,7 +29,8 @@ void	ft_sleep_die(t_philo *philo)
 				*philo->is_dead = DEAD;
 				pthread_mutex_unlock(philo->death_mutex);
 				pthread_mutex_lock(philo->printf_mutex);
-				printf("%llu ms - Philo %d has died\n", get_time() - philo->start_ms, philo->philo_id);
+				printf("%llu ms - Philo %d has died\n",
+					get_time() - philo->start_ms, philo->philo_id);
 				pthread_mutex_unlock(philo->printf_mutex);
 				break ;
 			}
@@ -83,4 +83,40 @@ int	ft_sleep(t_philo *philo)
 	if (ft_printf(philo, "is thinking\n") == 1)
 		return (1);
 	return (0);
+}
+
+static void	ft_init_thread(t_philo *philo, t_data *data, int i)
+{
+	if (philo->philo_id % 2 == 0)
+	{
+		pthread_create(&data->philo[i], NULL,
+			ft_philosopher_even, philo);
+	}
+	else
+	{
+		pthread_create(&data->philo[i], NULL,
+			ft_philosopher_odd, philo);
+	}
+}
+
+void	ft_create_philo(t_philo *philo, t_data *data, int philo_nbr)
+{
+	int			i;
+	uint64_t	now;
+
+	i = 0;
+	pthread_mutex_lock(&data->start_even_mutex);
+	pthread_mutex_lock(&data->start_odd_mutex);
+	i = 0;
+	now = get_time();
+	while (i < philo_nbr)
+	{
+		philo[i].start_ms = now;
+		philo[i].last_meal = now;
+		ft_init_thread(&philo[i], data, i);
+		i++;
+	}
+	pthread_mutex_unlock(&data->start_odd_mutex);
+	ft_usleep(philo->ms_eat);
+	pthread_mutex_unlock(&data->start_even_mutex);
 }

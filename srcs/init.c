@@ -6,7 +6,7 @@
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 13:26:41 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/05/04 09:40:30 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/05/04 14:19:11 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	ft_init_right_fork(t_philo *philo, int philo_nbr)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < philo_nbr)
@@ -33,11 +33,22 @@ void	ft_init_right_fork(t_philo *philo, int philo_nbr)
 	}
 }
 
-void	ft_init_philo(t_philo *philo, t_data *data, char **av)
+void	ft_init_mutex_philo(t_philo *philo, t_data *data, int i)
 {
-	int	i;
+	philo[i].printf_mutex = &data->printf_mutex;
+	philo[i].death_mutex = &data->death_mutex;
+	philo[i].start_odd_mutex = &data->start_odd_mutex;
+	philo[i].start_even_mutex = &data->start_even_mutex;
+	pthread_mutex_init(&philo[i].fork_mutex, NULL);
+	pthread_mutex_init(&philo[i].eat_mutex, NULL);
+}
 
-	i = 0;
+void	ft_init_data(t_data *data, char **av, int ac)
+{
+	if (ac == 6)
+		data->must_eat = ft_atoi(av[5]);
+	else
+		data->must_eat = -1;
 	data->is_dead = NOT_DEAD;
 	data->finish_flag = NOT_FINISH;
 	data->philo_nbr = ft_atoi(av[1]);
@@ -49,6 +60,14 @@ void	ft_init_philo(t_philo *philo, t_data *data, char **av)
 	pthread_mutex_init(&data->death_mutex, NULL);
 	pthread_mutex_init(&data->start_even_mutex, NULL);
 	pthread_mutex_init(&data->start_odd_mutex, NULL);
+}
+
+void	ft_init_philo(t_philo *philo, t_data *data, char **av, int ac)
+{
+	int	i;
+
+	i = 0;
+	ft_init_data(data, av, ac);
 	while (i < data->philo_nbr)
 	{
 		philo[i].eat_counter = 0;
@@ -63,39 +82,8 @@ void	ft_init_philo(t_philo *philo, t_data *data, char **av)
 		philo[i].ms_sleep = data->ms_sleep;
 		philo[i].must_eat = data->must_eat;
 		philo[i].fork = ON_TABLE;
-		philo[i].printf_mutex = &data->printf_mutex;
-		philo[i].death_mutex = &data->death_mutex;
-		philo[i].start_odd_mutex = &data->start_odd_mutex;
-		philo[i].start_even_mutex = &data->start_even_mutex;
-		// put malloc protection
-		pthread_mutex_init(&philo[i].fork_mutex, NULL);
-		pthread_mutex_init(&philo[i].eat_mutex, NULL);
+		ft_init_mutex_philo(philo, data, i);
 		i++;
 	}
 	ft_init_right_fork(philo, data->philo_nbr);
-}
-
-void	ft_create_philo(t_philo *philo, t_data *data, int philo_nbr)
-{
-	int	i;
-	uint64_t now;
-
-	i = 0;
-	pthread_mutex_lock(&data->start_even_mutex);
-	pthread_mutex_lock(&data->start_odd_mutex);
-	i = 0;
-	now = get_time();
-	while (i < philo_nbr)
-	{
-		philo[i].start_ms = now;
-		philo[i].last_meal = now; 
-		if (philo[i].philo_id % 2 == 0)
-			pthread_create(&data->philo[i], NULL, ft_philosopher_even, &philo[i]);
-		else
-			pthread_create(&data->philo[i], NULL, ft_philosopher_odd, &philo[i]);
-		i++;
-	}
-	pthread_mutex_unlock(&data->start_odd_mutex);
-	ft_usleep(philo->ms_eat);
-	pthread_mutex_unlock(&data->start_even_mutex);
 }
