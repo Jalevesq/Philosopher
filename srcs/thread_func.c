@@ -6,25 +6,34 @@
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 10:13:48 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/05/03 15:34:06 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/05/03 20:32:23 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
+
+// check if no data race
 void	ft_sleep_die(t_philo *philo)
 {
-	uint64_t now;
-
-	now = get_time();
-	usleep((philo->ms_die - 10) * 1000);
+	if (philo->state == EATING)
+		usleep((philo->ms_die - 10) * 1000);
+	else
+		usleep(((philo->ms_die - philo->ms_eat) - 10) * 1000);
 	while (1)
 	{
-		if (get_time() - now >= philo->ms_die)
+		if (get_time() - philo->start_ms >= philo->ms_die)
 		{
-			ft_printf(philo, "has died in sleep_die\n");
 			pthread_mutex_lock(philo->death_mutex);
-			*philo->is_dead = DEAD;
+			if (*philo->is_dead != DEAD)
+			{
+				*philo->is_dead = DEAD;
+				pthread_mutex_unlock(philo->death_mutex);
+				pthread_mutex_lock(philo->printf_mutex);
+				printf("%llu ms - Philo %d has died\n", get_time() - philo->start_ms, philo->philo_id);
+				pthread_mutex_unlock(philo->printf_mutex);
+				break ;
+			}
 			pthread_mutex_unlock(philo->death_mutex);
 			break ;
 		}
@@ -65,7 +74,6 @@ int	ft_sleep(t_philo *philo)
 		return (1);
 	if (philo->ms_sleep + philo->ms_eat >= philo->ms_die)
 	{
-		philo->state = THINKING;
 		ft_sleep_die(philo);
 		return (1);
 	}
