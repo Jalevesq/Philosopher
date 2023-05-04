@@ -6,7 +6,7 @@
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/30 12:17:40 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/05/03 15:20:33 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/05/03 20:44:51 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void	ft_usleep(int sleep)
 	uint64_t now;
 
 	now = get_time();
-	usleep((sleep - 10) * 1000);
+	usleep((sleep / 2) * 1000);
 	while (1)
 	{
 		if (get_time() - now >= ((uint64_t)sleep))
