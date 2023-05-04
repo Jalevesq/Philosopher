@@ -6,7 +6,7 @@
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/30 12:17:40 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/05/04 14:20:12 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/05/04 15:11:38 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	ft_death_watcher(t_philo *philo, uint64_t now)
 		pthread_mutex_lock(philo->death_mutex);
 		*philo->is_dead = DEAD;
 		pthread_mutex_unlock(philo->death_mutex);
-		printf("%llu ms - Philo %d has died in first_dead\n",
+		printf("%llu ms - Philo %d died\n",
 			now - philo->start_ms, philo->philo_id);
 		pthread_mutex_unlock(philo->printf_mutex);
 		return (1);

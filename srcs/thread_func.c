@@ -6,7 +6,7 @@
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 10:13:48 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/05/04 13:25:08 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/05/04 15:11:52 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	ft_sleep_die(t_philo *philo)
 				*philo->is_dead = DEAD;
 				pthread_mutex_unlock(philo->death_mutex);
 				pthread_mutex_lock(philo->printf_mutex);
-				printf("%llu ms - Philo %d has died\n",
+				printf("%llu ms - Philo %d died\n",
 					get_time() - philo->start_ms, philo->philo_id);
 				pthread_mutex_unlock(philo->printf_mutex);
 				break ;

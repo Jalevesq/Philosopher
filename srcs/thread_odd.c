@@ -6,7 +6,7 @@
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 13:27:26 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/05/04 12:59:05 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/05/04 15:11:26 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 static int	ft_take_own_fork_odd(t_philo *philo)
 {
-	if (ft_printf(philo, "take left fork (own)\n") == 1)
+	if (ft_printf(philo, "has taken a fork\n") == 1)
 		return (1);
 	if (philo->philo_id == 1 && philo->philo_nbr == 1)
 	{
 		ft_usleep(philo->ms_die);
-		ft_printf(philo, "has died\n");
+		ft_printf(philo, "died\n");
 		pthread_mutex_lock(philo->death_mutex);
 		*philo->is_dead = DEAD;
 		pthread_mutex_unlock(philo->death_mutex);
@@ -37,7 +37,7 @@ static int	ft_take_fork_odd(t_philo *philo)
 		return (1);
 	}
 	pthread_mutex_lock(philo->right_fork_mutex);
-	if (ft_printf(philo, "take right fork\n") == 1)
+	if (ft_printf(philo, "has taken a fork\n") == 1)
 	{
 		pthread_mutex_unlock(&philo->fork_mutex);
 		pthread_mutex_unlock(philo->right_fork_mutex);
