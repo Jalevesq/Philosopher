@@ -6,41 +6,43 @@
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 13:27:26 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/05/04 15:11:26 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/05/05 12:10:14 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-static int	ft_take_own_fork_odd(t_philo *philo)
-{
-	if (ft_printf(philo, "has taken a fork\n") == 1)
-		return (1);
-	if (philo->philo_id == 1 && philo->philo_nbr == 1)
-	{
-		ft_usleep(philo->ms_die);
-		ft_printf(philo, "died\n");
-		pthread_mutex_lock(philo->death_mutex);
-		*philo->is_dead = DEAD;
-		pthread_mutex_unlock(philo->death_mutex);
-		return (1);
-	}
-	return (0);
-}
+// static int	ft_take_right_fork_odd(t_philo *philo)
+// {
+// 	if ()
+// 		return (1);
+// 	// find a better way to do si
+// 	// if (philo->philo_id == 1 && philo->philo_nbr == 1)
+// 	// {
+// 	// 	ft_usleep(philo->ms_die);
+// 	// 	ft_printf(philo, "died\n");
+// 	// 	pthread_mutex_lock(philo->death_mutex);
+// 	// 	*philo->is_dead = DEAD;
+// 	// 	pthread_mutex_unlock(philo->death_mutex);
+// 	// 	return (1);
+// 	// }
+// 	return (0);
+// }
+	
 
 static int	ft_take_fork_odd(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->fork_mutex);
-	if (ft_take_own_fork_odd(philo) == 1)
-	{
-		pthread_mutex_unlock(&philo->fork_mutex);
-		return (1);
-	}
 	pthread_mutex_lock(philo->right_fork_mutex);
 	if (ft_printf(philo, "has taken a fork\n") == 1)
 	{
-		pthread_mutex_unlock(&philo->fork_mutex);
 		pthread_mutex_unlock(philo->right_fork_mutex);
+		return (1);
+	}
+	pthread_mutex_lock(&philo->fork_mutex);
+	if (ft_printf(philo, "has taken a fork\n") == 1)
+	{
+		pthread_mutex_unlock(philo->right_fork_mutex);
+		pthread_mutex_unlock(&philo->fork_mutex);
 		return (1);
 	}
 	return (0);
@@ -53,6 +55,7 @@ void	*ft_philosopher_odd(void *arg)
 	philo = (t_philo *)arg;
 	pthread_mutex_lock(philo->start_odd_mutex);
 	pthread_mutex_unlock(philo->start_odd_mutex);
+	
 	while (1)
 	{
 		if (ft_take_fork_odd(philo) == 1)

@@ -6,7 +6,7 @@
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 10:06:37 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/05/04 15:11:03 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/05/05 11:48:15 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ int	ft_take_fork_even(t_philo *philo)
 	pthread_mutex_lock(&philo->fork_mutex);
 	if (ft_printf(philo, "has taken a fork\n") == 1)
 	{
-		pthread_mutex_unlock(&philo->fork_mutex);
 		pthread_mutex_unlock(philo->right_fork_mutex);
+		pthread_mutex_unlock(&philo->fork_mutex);
 		return (1);
 	}
 	return (0);

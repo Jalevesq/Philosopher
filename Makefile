@@ -6,7 +6,7 @@
 #    By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/15 09:37:39 by jalevesq          #+#    #+#              #
-#    Updated: 2023/05/04 15:12:30 by jalevesq         ###   ########.fr        #
+#    Updated: 2023/05/05 13:34:19 by jalevesq         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ SRCS_DIR = srcs
 OBJS_DIR = objs
 
 SRCS = philo.c init.c thread_func.c thread_even.c thread_odd.c \
-	ft_atoi.c isdead.c utils.c ft_isdigit.c parsing.c
+	ft_atoi.c utils.c ft_isdigit.c parsing.c check_n_end.c \
 
 OBJS = $(addprefix ${OBJS_DIR}/, ${SRCS:%.c=%.o})
 

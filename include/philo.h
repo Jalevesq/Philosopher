@@ -6,7 +6,7 @@
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 09:35:39 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/05/04 14:20:45 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/05/05 13:15:54 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ int			ft_death_watcher(t_philo *philo, uint64_t now);
 int			ft_printf(t_philo *philo, char *str);
 int			ft_printf_meal(t_philo *philo, char *str);
 uint64_t	get_time(void);
+void		ft_check_state(t_philo *philo, t_data *data);
 int			ft_check_arg(int ac, char **av);
 void		ft_usleep(int sleep);
 int			ft_atoi(const char *str);

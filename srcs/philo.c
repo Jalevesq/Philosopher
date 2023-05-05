@@ -6,7 +6,7 @@
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 09:37:35 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/05/04 14:19:52 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/05/05 13:16:17 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,57 +34,27 @@ void	ft_join_n_free(t_philo *philo, t_data *data)
 	pthread_mutex_destroy(&data->death_mutex);
 	pthread_mutex_destroy(&data->start_even_mutex);
 	pthread_mutex_destroy(&data->start_odd_mutex);
+	free(data->philo);
+	free(philo);
+	free(data);
 }
 
-int	ft_philo_all_eat(t_philo *philo)
+void	*ft_philo_solo(void *arg)
 {
-	int	i;
+	t_philo *philo;
 
-	i = 0;
-	while (i < philo->philo_nbr)
-	{
-		pthread_mutex_lock(&philo[i].eat_mutex);
-		if (philo[i].eat_counter >= philo[i].must_eat)
-		{
-			pthread_mutex_unlock(&philo[i].eat_mutex);
-			i++;
-		}
-		else
-		{
-			pthread_mutex_unlock(&philo[i].eat_mutex);
-			return (0);
-		}
-	}
-	return (1);
+	philo = (t_philo *)arg;
+	printf("%llu ms - Philo %d %s\n", get_time() - philo->start_ms, philo->philo_id, "has taken a fork");
+	ft_usleep(philo->ms_die);
+	printf("%llu ms - Philo %d %s\n", get_time() - philo->start_ms, philo->philo_id, "died");
+	return (NULL);
 }
 
-void	ft_check_state(t_philo *philo, t_data *data)
+void	ft_create_one_philo(t_philo *philo, t_data *data)
 {
-	int	i;
-
-	while (1)
-	{
-		i = 0;
-		while (i < data->philo_nbr)
-		{
-			pthread_mutex_lock(philo[i].death_mutex);
-			if (*philo[i].is_dead == DEAD)
-			{
-				pthread_mutex_unlock(philo[i].death_mutex);
-				return ;
-			}
-			pthread_mutex_unlock(philo[i].death_mutex);
-			if (ft_philo_all_eat(philo) == 1 && data->must_eat > 0)
-			{
-				pthread_mutex_lock(philo[i].death_mutex);
-				*philo->finish_flag = FINISH;
-				pthread_mutex_unlock(philo[i].death_mutex);
-				return ;
-			}
-			i++;
-		}
-		usleep(3000);
-	}
+	philo->start_ms = get_time();
+	pthread_create(&data->philo[0], NULL,
+			ft_philo_solo, philo);
 }
 
 // -fsanitize=thread
@@ -108,11 +78,13 @@ int	main(int ac, char **av)
 	if (!philo)
 		return (1);
 	ft_init_philo(philo, data, av, ac);
-	ft_create_philo(philo, data, data->philo_nbr);
-	ft_check_state(philo, data);
+	if (data->philo_nbr == 1)
+		ft_create_one_philo(philo, data);
+	else
+	{
+		ft_create_philo(philo, data, data->philo_nbr);
+		ft_check_state(philo, data);
+	}
 	ft_join_n_free(philo, data);
-	free(data->philo);
-	free(philo);
-	free(data);
 	return (0);
 }
