@@ -6,7 +6,7 @@
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 09:37:35 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/05/07 11:36:54 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/05/07 13:27:39 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int	main(int ac, char **av)
 	data = malloc(sizeof(t_data));
 	if (!data)
 		return (1);
-	philo = malloc(sizeof(t_philo) * (atoi(av[1])));
+	philo = malloc(sizeof(t_philo) * (ft_atoi(av[1])));
 	if (!philo)
 		return (1);
 	ft_init_philo(philo, data, av, ac);
