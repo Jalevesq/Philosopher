@@ -6,7 +6,7 @@
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 09:37:35 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/05/07 10:42:04 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/05/07 11:36:54 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,6 @@ static void	ft_create_one_philo(t_philo *philo, t_data *data)
 		ft_philo_solo, philo);
 }
 
-// -fsanitize=thread
-// To do:
-// 1- Start simulation time for every philosopher at the same time.
-// 2- Wait for every thread to be created before starting.
 int	main(int ac, char **av)
 {
 	t_data	*data;

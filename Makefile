@@ -6,14 +6,15 @@
 #    By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/15 09:37:39 by jalevesq          #+#    #+#              #
-#    Updated: 2023/05/05 13:34:19 by jalevesq         ###   ########.fr        #
+#    Updated: 2023/05/07 11:40:09 by jalevesq         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -O2
+# CFLAGS = -Wall -Wextra -Werror -O2
+CFLAGS = -Wall -Wextra -Werror -fsanitize=thread
 RM = rm -rf
 
 INC_DIR = includes
