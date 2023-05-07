@@ -6,13 +6,13 @@
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 09:37:35 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/05/05 13:16:17 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/05/07 10:42:04 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-void	ft_join_n_free(t_philo *philo, t_data *data)
+static void	ft_join_n_free(t_philo *philo, t_data *data)
 {
 	int	i;
 
@@ -22,7 +22,7 @@ void	ft_join_n_free(t_philo *philo, t_data *data)
 		pthread_join(data->philo[i], NULL);
 		i++;
 	}
-	usleep((data->ms_sleep + data->ms_eat) / 2);
+	usleep(4000);
 	i = 0;
 	while (i < philo->philo_nbr)
 	{
@@ -39,22 +39,24 @@ void	ft_join_n_free(t_philo *philo, t_data *data)
 	free(data);
 }
 
-void	*ft_philo_solo(void *arg)
+static void	*ft_philo_solo(void *arg)
 {
-	t_philo *philo;
+	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	printf("%llu ms - Philo %d %s\n", get_time() - philo->start_ms, philo->philo_id, "has taken a fork");
+	printf("%llu ms - Philo %d %s\n",
+		get_time() - philo->start_ms, philo->philo_id, "has taken a fork");
 	ft_usleep(philo->ms_die);
-	printf("%llu ms - Philo %d %s\n", get_time() - philo->start_ms, philo->philo_id, "died");
+	printf("%llu ms - Philo %d %s\n",
+		get_time() - philo->start_ms, philo->philo_id, "died");
 	return (NULL);
 }
 
-void	ft_create_one_philo(t_philo *philo, t_data *data)
+static void	ft_create_one_philo(t_philo *philo, t_data *data)
 {
 	philo->start_ms = get_time();
 	pthread_create(&data->philo[0], NULL,
-			ft_philo_solo, philo);
+		ft_philo_solo, philo);
 }
 
 // -fsanitize=thread

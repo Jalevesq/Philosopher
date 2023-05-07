@@ -6,7 +6,7 @@
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/30 12:24:57 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/05/05 13:15:20 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/05/07 10:41:56 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,6 @@ void	ft_check_state(t_philo *philo, t_data *data)
 			}
 			i++;
 		}
-		usleep(2000);
+		usleep(3000);
 	}
 }

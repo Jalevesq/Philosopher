@@ -6,13 +6,13 @@
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 10:06:37 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/05/05 11:48:15 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/05/07 11:20:08 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-int	ft_take_fork_even(t_philo *philo)
+static int	ft_take_fork_even(t_philo *philo)
 {
 	pthread_mutex_lock(philo->right_fork_mutex);
 	if (ft_printf(philo, "has taken a fork\n") == 1)

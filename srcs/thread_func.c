@@ -6,13 +6,12 @@
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 10:13:48 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/05/05 11:57:24 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/05/07 11:20:34 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-// check if no data race
 void	ft_sleep_die(t_philo *philo)
 {
 	if (philo->state == EATING)
@@ -27,11 +26,10 @@ void	ft_sleep_die(t_philo *philo)
 			if (*philo->is_dead != DEAD)
 			{
 				*philo->is_dead = DEAD;
-				pthread_mutex_unlock(philo->death_mutex);
-				pthread_mutex_lock(philo->printf_mutex);
 				if (*philo->finish_flag != FINISH)
 					printf("%llu ms - Philo %d died\n",
 						get_time() - philo->start_ms, philo->philo_id);
+				pthread_mutex_unlock(philo->death_mutex);
 				pthread_mutex_unlock(philo->printf_mutex);
 				break ;
 			}
@@ -117,6 +115,9 @@ void	ft_create_philo(t_philo *philo, t_data *data, int philo_nbr)
 		i++;
 	}
 	pthread_mutex_unlock(&data->start_odd_mutex);
-	ft_usleep(philo->ms_eat);
+	if (data->ms_eat + data->ms_sleep >= data->ms_die)
+		ft_usleep(data->ms_die);
+	else
+		ft_usleep(data->ms_eat);
 	pthread_mutex_unlock(&data->start_even_mutex);
 }

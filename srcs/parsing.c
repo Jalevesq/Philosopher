@@ -6,11 +6,25 @@
 /*   By: jalevesq <jalevesq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 13:24:22 by jalevesq          #+#    #+#             */
-/*   Updated: 2023/05/04 14:21:36 by jalevesq         ###   ########.fr       */
+/*   Updated: 2023/05/07 11:30:37 by jalevesq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
+
+static	int	ft_strlen(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (str)
+	{
+		while (str[i])
+			i++;
+		return (i);
+	}
+	return (i);
+}
 
 static int	ft_check_digit_input(char **av)
 {
@@ -34,14 +48,18 @@ static int	ft_check_digit_input(char **av)
 
 static int	ft_amount_in_input(char **av)
 {
-	if (ft_atoi(av[1]) <= 0 || ft_atoi(av[1]) >= 350
+	if (ft_atoi(av[1]) <= 0 || ft_atoi(av[1]) >= 351
 		|| ft_atoi(av[2]) < 50 || ft_atoi(av[2]) >= 2147483647
+		|| ft_strlen(av[2]) >= 11
 		|| ft_atoi(av[3]) < 50 || ft_atoi(av[3]) >= 2147483647
-		|| ft_atoi(av[4]) < 50 || ft_atoi(av[4]) >= 2147483647)
+		|| ft_strlen(av[3]) >= 11
+		|| ft_atoi(av[4]) < 50 || ft_atoi(av[4]) >= 2147483647
+		|| ft_strlen(av[4]) >= 11)
 		return (1);
 	if (av[5])
 	{
-		if (ft_atoi(av[5]) <= 0 || ft_atoi(av[5]) >= 2147483647)
+		if (ft_atoi(av[5]) <= 0 || ft_atoi(av[5]) >= 2147483647
+			|| ft_strlen(av[5]) >= 11)
 			return (1);
 	}
 	return (0);
